@@ -35,7 +35,7 @@ public class Testes {
 		//application.definirCapitao(3L);
 		
 		//Busca Capitão
-		//System.out.println("Capitão: " + application.buscarCapitaoDoTime(4L));
+		//System.out.println("Capitão: " + application.buscarCapitaoDoTime(1L));
 		
 		//Busca Nome Jogador
 		//System.out.println("Jogador: " + application.buscarNomeJogador(3L));
@@ -66,10 +66,10 @@ public class Testes {
 		//System.out.println(application.buscarSalarioDoJogador(4l));
 		
 		// Buscar Top Jogadores
-		System.out.println(application.buscarTopJogadores(4));
+		//System.out.println(application.buscarTopJogadores(4));
 		
 		// Buscar Cor Camisa Time de Fora
-		//System.out.println("Uniforme visitante: " + application.buscarCorCamisaTimeDeFora(2L, 3L));
+		System.out.println("Uniforme visitante: " + application.buscarCorCamisaTimeDeFora(1L, 3L));
 		
 		//Imprime jogadores
 		//application.imprimeJogadores();

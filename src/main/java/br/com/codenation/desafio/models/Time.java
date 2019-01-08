@@ -1,6 +1,8 @@
 package br.com.codenation.desafio.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Time {
 
@@ -9,6 +11,7 @@ public class Time {
 	private LocalDate dataCriacao;
 	private String corUniformePrincipal;
 	private String corUniformeSecundario;
+	private List<Jogador> jogadores = new ArrayList<>();
 
 	public Time(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
 			String corUniformeSecundario) {
@@ -46,9 +49,17 @@ public class Time {
 		return corUniformeSecundario;
 	}
 	
+	public List<Jogador> getJogadores() {
+		return jogadores;
+	}
+	
+	public void adicionaJogador(Jogador jogador) {
+		this.jogadores.add(jogador);
+	}
+
 	@Override
 	public String toString() {
-		return "ID: " + this.id + "| Time: " + this.nome;
+		return "ID: " + this.id + "| Time: " + this.nome + "| Jogadores: " + jogadores;
 	}
 	
 	@Override
