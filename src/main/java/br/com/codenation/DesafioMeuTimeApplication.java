@@ -25,6 +25,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	@Desafio("incluirTime")
 	public void incluirTime(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
 			String corUniformeSecundario) {
+		
 		Time time = new Time(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario);
 
 		if (times.contains(time)) {
@@ -53,20 +54,20 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
 	@Desafio("definirCapitao")
 	public void definirCapitao(Long idJogador) {
-		verificaJogador(idJogador);
+		
+		if (jogadores.contains(new Jogador(idJogador))) {
+			throw new JogadorNaoEncontradoException();
+		}
 
 		Time timeDoJogador = timeDojogador(idJogador);
-
-		jogadores.forEach((jogador) -> {
-			if (jogador.getTime().getId().equals(timeDoJogador.getId())) {
-				if (!jogador.getId().equals(idJogador)) {
-					jogador.setCapitao(false);
-				}
-				if (jogador.getId().equals(idJogador)) {
-					jogador.setCapitao(true);
-				}
-			}
-		});
+		
+		System.out.println(times.get(0).getNome());
+		for (Time time : times) {
+			if(time.getId().equals(timeDoJogador.getId())) {
+				time.setCapitao(idJogador);
+			} 
+		}
+		
 //		throw new UnsupportedOperationException();
 	}
 
@@ -75,20 +76,13 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
 		verificaTime(idTime);
 
-		Long idCapitao = null;
-		for (Jogador jogador : jogadores) {
-			if(jogador.getTime().getId().equals(idTime)) {
-				if(jogador.isCapitao()) {
-					idCapitao = jogador.getId();
-				} 
-			}
-		}
+		Time time = buscaTimePorID(idTime);
 		
-		if(idCapitao == null) {
+		if(time.getCapitao() == null) {
 			throw new CapitaoNaoInformadoException();
 		}
 		
-		return idCapitao;
+		return time.getCapitao();
 		
 //		throw new UnsupportedOperationException();
 	}
@@ -97,7 +91,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	public String buscarNomeJogador(Long idJogador) {
 		return jogadores.stream().filter(jogador -> jogador.getId().equals(idJogador)).map(Jogador::getNome).findFirst()
 				.orElseThrow(() -> new JogadorNaoEncontradoException());
-		//throw new UnsupportedOperationException();
+//		throw new UnsupportedOperationException();
 	}
 
 	@Desafio("buscarNomeTime")
@@ -130,11 +124,16 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
 	@Desafio("buscarJogadorMaisVelho")
 	public Long buscarJogadorMaisVelho(Long idTime) {
+		
 		verificaTime(idTime);
 
-		Stream<Jogador> jogadoresDoTime = filtroJogadoresPorTime(idTime);
+		List<Jogador> jogadoresDoTime = filtroJogadoresPorTime(idTime).collect(Collectors.toList());
 
-		return jogadoresDoTime.min(Comparator.comparing(Jogador::getDataNascimento)).get().getId();
+		jogadoresDoTime.sort(Comparator.comparing(Jogador::getDataNascimento)
+				.thenComparing(Comparator.comparing(Jogador::getId)));
+		
+		return jogadoresDoTime.get(0).getId();
+		
 //		throw new UnsupportedOperationException();
 
 	}
@@ -150,9 +149,14 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	public Long buscarJogadorMaiorSalario(Long idTime) {
 		verificaTime(idTime);
 
-		Stream<Jogador> jogadoresDoTime = filtroJogadoresPorTime(idTime);
-
-		return jogadoresDoTime.max(Comparator.comparing(Jogador::getSalario)).get().getId();
+		List<Jogador> jogadoresDoTime = filtroJogadoresPorTime(idTime).collect(Collectors.toList());
+		
+		jogadoresDoTime.
+			sort(Comparator.comparing(Jogador::getSalario).reversed()
+					.thenComparing(Comparator.comparing(Jogador::getId)));
+		
+		return jogadoresDoTime.get(0).getId();
+		
 //		throw new UnsupportedOperationException();
 	}
 
@@ -166,10 +170,27 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 //		throw new UnsupportedOperationException();
 	}
 
+	/***/
 	@Desafio("buscarTopJogadores")
 	public List<Long> buscarTopJogadores(Integer top) {
-		return jogadores.stream().sorted((j1, j2) -> Integer.compare(j2.getNivelHabilidade(), j1.getNivelHabilidade()))
-				.map(Jogador::getId).collect(Collectors.toList()).subList(0, top);
+		
+		if(jogadores.isEmpty()) {
+			return new ArrayList<Long>();
+		}
+		
+		if(top > jogadores.size()) {
+			top = jogadores.size();
+		}
+		
+		List<Long> jogadoresId = new ArrayList<>();
+		
+		jogadores.sort(Comparator.comparing(Jogador::getNivelHabilidade).reversed()
+									.thenComparing(Comparator.comparing(Jogador::getId)));
+		jogadores.subList(0, top).forEach(jogador -> jogadoresId.add(jogador.getId()));
+		
+		return jogadoresId;
+		/*return jogadores.stream().sorted(Comparator.comparing(Jogador::getNivelHabilidade))
+				.map(Jogador::getId).collect(Collectors.toList()).subList(0, top);*/
 //		throw new UnsupportedOperationException();
 	}
 
@@ -177,46 +198,27 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
 	public String buscarCorCamisaTimeDeFora(Long timeDaCasa, Long timeDeFora) {
 
 		String corUniforme = "";
-		Time timeCasa = null;
-		Time visitante = null;
-		/*Time timeCasa = times.stream().filter(time -> time.getId().equals(timeDaCasa)).findFirst().get();
-		Time visitante = times.stream().filter(time -> time.getId().equals(timeDeFora)).findFirst().get();
+		Time timeCasa = buscaTimePorID(timeDaCasa);
+		Time visitante = buscaTimePorID(timeDeFora);
 
 
 		if (timeCasa.getCorUniformePrincipal().equals(visitante.getCorUniformePrincipal())) {
 			corUniforme = visitante.getCorUniformeSecundario();
 		} else {
 			corUniforme = visitante.getCorUniformePrincipal();
-		}*/
+		}
 
-		for (Time time : times) {
-			if(time.getId().equals(timeDaCasa)) {
-				timeCasa = time;
-			}
-			if(time.getId().equals(timeDeFora)) {
-				visitante = time;
-			}
-		}
-		
-		if(timeCasa.getCorUniformePrincipal().equals(visitante.getCorUniformePrincipal())) {
-			corUniforme = visitante.getCorUniformeSecundario();
-		} else {
-			corUniforme = visitante.getCorUniformePrincipal();
-		}
-		
 		return corUniforme;
 //		throw new UnsupportedOperationException();
+	}
+
+	private Time buscaTimePorID(Long idTime) {
+		return times.stream().filter(time -> time.getId().equals(idTime)).findFirst().get();
 	}
 
 	private void verificaTime(Long idTime) {
 		if (!times.contains(new Time(idTime))) {
 			throw new TimeNaoEncontradoException();
-		}
-	}
-
-	private void verificaJogador(Long idJogador) {
-		if (jogadores.contains(new Jogador(idJogador))) {
-			throw new JogadorNaoEncontradoException();
 		}
 	}
 

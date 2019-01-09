@@ -11,6 +11,7 @@ public class Time {
 	private LocalDate dataCriacao;
 	private String corUniformePrincipal;
 	private String corUniformeSecundario;
+	private Long capitao;
 	private List<Jogador> jogadores = new ArrayList<>();
 
 	public Time(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
@@ -57,9 +58,17 @@ public class Time {
 		this.jogadores.add(jogador);
 	}
 
+	public Long getCapitao() {
+		return capitao;
+	}
+	
+	public void setCapitao(Long capitao) {
+		this.capitao = capitao;
+	}
+	
 	@Override
 	public String toString() {
-		return "ID: " + this.id + "| Time: " + this.nome + "| Jogadores: " + jogadores;
+		return "ID: " + this.id + "| Time: " + this.nome + "| Capitão: " + this.capitao;
 	}
 	
 	@Override

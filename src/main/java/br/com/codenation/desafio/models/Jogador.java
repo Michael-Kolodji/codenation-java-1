@@ -98,7 +98,7 @@ public class Jogador {
 	public String toString() {
 
 		return "{ID: " + this.id + "| Jogador: " + this.nome + "| Time: " + this.time.getId() + "| Capitão: "
-				+ this.capitao + "| Habilidade: " + this.nivelHabilidade + "}\n";
+				+ this.capitao + "| Habilidade: " + this.nivelHabilidade + "| Salário: " + this.salario + "}\n";
 	}
 
 }
