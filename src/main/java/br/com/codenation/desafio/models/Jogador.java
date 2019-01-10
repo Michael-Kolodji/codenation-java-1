@@ -36,7 +36,7 @@ public class Jogador {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((time == null) ? 0 : time.hashCode());
+		//result = prime * result + ((time == null) ? 0 : time.hashCode());
 		return result;
 	}
 
@@ -54,11 +54,11 @@ public class Jogador {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
-		if (time == null) {
+		/*if (time == null) {
 			if (other.time != null)
 				return false;
 		} else if (!time.equals(other.time))
-			return false;
+			return false;*/
 		return true;
 	}
 

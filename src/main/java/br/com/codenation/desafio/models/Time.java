@@ -11,7 +11,7 @@ public class Time {
 	private LocalDate dataCriacao;
 	private String corUniformePrincipal;
 	private String corUniformeSecundario;
-	private Long capitao;
+	private Long capitao = 0L;
 	private List<Jogador> jogadores = new ArrayList<>();
 
 	public Time(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,

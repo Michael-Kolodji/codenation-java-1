@@ -32,23 +32,23 @@ public class Testes {
 		//Define Capitão
 		application.definirCapitao(1L);
 		//System.out.println("-----------------------------");
-		//application.definirCapitao(3L);
+		application.definirCapitao(3L);
 		
 		/*long ini = System.nanoTime();
 		long fim = System.nanoTime();
 		System.out.println("Tempo: " + (fim - ini));*/
 		
 		//Busca Capitão
-		//System.out.println("Capitão: " + application.buscarCapitaoDoTime(2L));
+		//System.out.println("Capitão: " + application.buscarCapitaoDoTime(1L));
 		
 		//Busca Nome Jogador
 		//System.out.println("Jogador: " + application.buscarNomeJogador(3L));
 		
 		// Busca Nome Time
-		//System.out.println("Time: " + application.buscarNomeTime(2L));
+		//System.out.println("Time: " + application.buscarNomeTime(4L));
 		
 		// Buscar Jogadores do Time
-		//System.out.println(application.buscarJogadoresDoTime(1L));
+		//System.out.println(application.buscarJogadoresDoTime(2L));
 
 		// Buscar Melhor Jogador do Time
 		//System.out.println("Melhor Jogador: " + application.buscarMelhorJogadorDoTime(1L));
@@ -63,10 +63,10 @@ public class Testes {
 		//System.out.println(application.buscarJogadorMaiorSalario(2L));
 		
 		// Buscar Salario Do Jogador
-		//System.out.println(application.buscarSalarioDoJogador(4l));
+		//System.out.println(application.buscarSalarioDoJogador(9l));
 		
 		// Buscar Top Jogadores
-		System.out.println(application.buscarTopJogadores(2));
+		//System.out.println(application.buscarTopJogadores(2));
 		
 		// Buscar Cor Camisa Time de Fora
 		//System.out.println("Uniforme visitante: " + application.buscarCorCamisaTimeDeFora(1L, 3L));
